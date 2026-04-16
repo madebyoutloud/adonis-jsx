@@ -1,5 +1,10 @@
-import type { JsxConfig } from './types.js'
+import type { JsxConfig, UserJsxConfig } from './types.js'
 
-export function defineConfig<T extends JsxConfig>(config: T): T {
-  return config
+export function defineConfig(config: UserJsxConfig): JsxConfig {
+  return {
+    mail: {
+      context: true,
+      ...config.mail,
+    },
+  }
 }

@@ -1,8 +1,9 @@
 import type { LazyImport } from '@adonisjs/core/types/common'
 import type { MailerTemplateEngine } from '@adonisjs/mail/types'
-import type { FC, JSX } from 'react'
+import type { Context, FC, JSX } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import type { JsxEngine } from './jsx_engine.js'
+import type { GlobalState } from './types.js'
 
 export class MailTemplateEngine implements MailerTemplateEngine {
   constructor(private jsx: JsxEngine) {}
@@ -22,9 +23,17 @@ export class MailTemplateEngine implements MailerTemplateEngine {
 
     let element = <Component {...data} />
 
-    if (this.jsx.mail.globals) {
+    let context: Context<GlobalState> | undefined
+
+    if (this.jsx.mail.context === true) {
       const { GlobalContext } = await import('./global.context.js')
-      element = <GlobalContext.Provider value={state}>{element}</GlobalContext.Provider>
+      context = GlobalContext
+    } else if (this.jsx.mail.context) {
+      context = this.jsx.mail.context
+    }
+
+    if (context) {
+      element = <context.Provider value={state}>{element}</context.Provider>
     }
 
     if (this.jsx.mail.render) {

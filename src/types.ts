@@ -1,6 +1,6 @@
 import type { ApplicationService } from '@adonisjs/core/types'
 import type { HttpRequest } from '@adonisjs/core/http'
-import type { JSX } from 'react'
+import type { Context, JSX } from 'react'
 
 export interface GlobalState {
   app: ApplicationService
@@ -17,10 +17,14 @@ export type RenderFn = (template: JSX.Element, state: GlobalState) => Promise<st
 export interface JsxConfig {
   mail: {
     /**
-     * Automatically inject global state into mail templates
+     * Automatically inject global state or custom context provider
      * @default true
      */
-    globals: boolean
+    context: boolean | Context<GlobalState>
     render?: RenderFn
   }
+}
+
+export interface UserJsxConfig {
+  mail?: Partial<JsxConfig['mail']>
 }
