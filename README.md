@@ -27,6 +27,17 @@ Install the package from the npm registry and configure it.
 node ace add @outloud/adonis-jsx
 ```
 
+Then add `"jsx": "react-jsx"` to your `tsconfig.json` compiler options.
+
+```jsonc
+// tsconfig.json
+{
+  "compilerOptions": {
+    "jsx": "react-jsx"
+  }
+}
+```
+
 See `config/jsx.ts` for available configuration options.
 
 ## Usage

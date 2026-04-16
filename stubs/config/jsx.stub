@@ -7,11 +7,11 @@ import { defineConfig } from '@outloud/adonis-jsx'
 const jsxConfig = defineConfig({
   mail: {
     // You can define custom render function here if you are using react-email or jsx-email
-    // render: async (template, state) => {
-      const { render } = await import('@react-email/render')
-      return await render(template)
-    }
-  }
+    // render: async (template) => {
+    //   const { render } = await import('@react-email/render')
+    //   return await render(template)
+    // },
+  },
 })
 
 export default jsxConfig
