@@ -1,7 +1,7 @@
 import type { ApplicationService } from '@adonisjs/core/types'
 import { HttpContext } from '@adonisjs/core/http'
 import type { LazyImport } from '@adonisjs/core/types/common'
-import type { FC } from 'react'
+import type { FC, JSX } from 'react'
 import { JsxEngine } from '../src/jsx_engine.js'
 import { MailTemplateEngine } from '../src/mail_template_engine.js'
 import type { Renderer } from '../src/renderer.js'
@@ -27,7 +27,7 @@ export default class JsxProvider {
     })
 
     HttpContext.getter('jsx', function (this: HttpContext) {
-      return jsx.renderer().share({ request: this.request })
+      return jsx.renderer<HttpState>().share({ request: this.request })
     })
 
     if (this.app.container.hasBinding('mail.manager')) {
@@ -51,13 +51,15 @@ declare module '@adonisjs/core/types' {
 
 declare module '@adonisjs/mail' {
   export interface Message {
-    htmlView<T = never>(template: LazyImport<FC<T>>, data: T): this
-    htmlView(template: string, data?: any): this
+    htmlView<T = object>(
+      template: LazyImport<FC<T>> | JSX.Element,
+      ...args: object extends T ? never[] : [data: NoInfer<T>]
+    ): this
   }
 }
 
 declare module '@adonisjs/mail/types' {
   export interface MailerTemplateEngine {
-    render(template: string | LazyImport<FC>, data?: any): Promise<string>
+    render(template: LazyImport<FC> | JSX.Element, sharedState?: any, data?: any): Promise<string>
   }
 }

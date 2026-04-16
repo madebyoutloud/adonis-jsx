@@ -7,7 +7,7 @@ export default createConfig({
   },
   style: {
     complexity: 12,
-  }
+  },
 })
   .append({
     ignores: ['playground/**'],

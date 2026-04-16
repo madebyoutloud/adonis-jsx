@@ -21,14 +21,14 @@ export class JsxEngine {
     return this
   }
 
-  renderer() {
-    return new Renderer(this.globals)
+  renderer<T extends object = object>() {
+    return new Renderer<T>(this.globals)
   }
 
-  async render<T = never>(
-    template: string | LazyImport<FC<T>> | JSX.Element,
-    data?: T,
+  async render<T = object>(
+    template: LazyImport<FC<T>> | JSX.Element,
+    ...args: object extends T ? never[] : [data: NoInfer<T>]
   ): Promise<string> {
-    return this.renderer().render(template, data)
+    return this.renderer().render(template, ...args)
   }
 }

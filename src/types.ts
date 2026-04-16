@@ -1,4 +1,5 @@
 import type { ApplicationService } from '@adonisjs/core/types'
+import type { HttpRequest } from '@adonisjs/core/http'
 
 export interface GlobalState {
   app: ApplicationService
@@ -6,6 +7,6 @@ export interface GlobalState {
   [key: string]: unknown
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface HttpState {
+export interface HttpState extends GlobalState {
+  request: HttpRequest
 }
