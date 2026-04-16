@@ -15,27 +15,22 @@ export class Renderer<State extends object = Record<string, any>> {
     return this
   }
 
-  async $render<T>(
-    template: LazyImport<FC<T>> | JSX.Element,
-    data?: T,
-  ): Promise<JSX.Element> {
-    const Template = await this.template(template)
-    const { GlobalContext } = await import('./global.context.jsx')
-
-    const state = { ...this.globals, ...this.locals }
-
-    return (
-      <GlobalContext.Provider value={state}>
-        <Template {...((data ?? {}) as any)} />
-      </GlobalContext.Provider>
-    )
+  state(): GlobalState & State {
+    return { ...this.globals, ...this.locals }
   }
 
   async render<T = object>(
     template: LazyImport<FC<T>> | JSX.Element,
     ...args: object extends T ? never[] : [data: NoInfer<T>]
   ): Promise<string> {
-    return renderToStaticMarkup(await this.$render(template, args[0]))
+    const Template = await this.template(template)
+    const { GlobalContext } = await import('./global.context.jsx')
+
+    return renderToStaticMarkup(
+      <GlobalContext.Provider value={this.state()}>
+        <Template {...((args[0] ?? {}) as any)} />
+      </GlobalContext.Provider>,
+    )
   }
 
   async template<T = never>(template: string | LazyImport<FC<T>> | JSX.Element): Promise<FC<T>> {

@@ -23,25 +23,22 @@
   },
   "sideEffects": false,
   "scripts": {
+    "copy:templates": "copyfiles \"stubs/**/*.stub\" build",
     "typecheck": "tsc --noEmit",
     "lint": "eslint . ",
     "lint:fix": "eslint --fix .",
     "pretest": "pnpm run lint",
     "test": "node --import=./tsnode.esm.js --enable-source-maps bin/test.ts",
-    "build": "tsdown",
+    "build": "tsdown && pnpm run copy:templates",
     "release": "release-it",
     "playground": "cd playground && pnpm dev"
   },
   "peerDependencies": {
     "@adonisjs/core": "^6 || ^7",
-    "@adonisjs/mail": "^10.2.0",
-    "jsx-email": "^2.8.4"
+    "@adonisjs/mail": "^10.2.0"
   },
   "peerDependenciesMeta": {
     "@adonisjs/mail": {
-      "optional": true
-    },
-    "jsx-email": {
       "optional": true
     }
   },

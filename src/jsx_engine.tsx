@@ -1,10 +1,16 @@
 import type { LazyImport } from '@adonisjs/core/types/common'
 import type { FC, JSX } from 'react'
-import type { GlobalState } from './types.js'
+import type { GlobalState, JsxConfig } from './types.js'
 import { Renderer } from './renderer.js'
 
 export class JsxEngine {
   private globals: GlobalState = {} as GlobalState
+
+  constructor(private config: JsxConfig) {}
+
+  get mail() {
+    return this.config.mail
+  }
 
   global<K extends keyof GlobalState | (string & {})>(
     name: K,

@@ -1,0 +1,15 @@
+{{{
+  exports({ to: app.configPath('jsx.ts') })
+}}}
+
+import { defineConfig } from '@outloud/adonis-jsx'
+
+const jsxConfig = defineConfig({
+  mail: {
+    globals: true,
+    // You can defined custom render function here if you are using react-email or jsx-email
+    // render: renderFn
+  }
+})
+
+export default jsxConfig

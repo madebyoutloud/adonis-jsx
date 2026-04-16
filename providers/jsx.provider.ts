@@ -5,14 +5,14 @@ import type { FC, JSX } from 'react'
 import { JsxEngine } from '../src/jsx_engine.js'
 import { MailTemplateEngine } from '../src/mail_template_engine.js'
 import type { Renderer } from '../src/renderer.js'
-import type { HttpState } from '../src/types.js'
+import type { HttpState, JsxConfig } from '../src/types.js'
 
 export default class JsxProvider {
   constructor(protected app: ApplicationService) {}
 
   register() {
     this.app.container.singleton(JsxEngine, async () => {
-      return new JsxEngine()
+      return new JsxEngine(this.app.config.get('jsx') as JsxConfig)
     })
 
     this.app.container.alias('jsx', JsxEngine)
